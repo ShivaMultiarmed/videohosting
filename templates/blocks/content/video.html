@@ -1,0 +1,40 @@
+﻿<div id="VideoHeader">
+    <h1 id="VideoTitle">[VIDEOTITLE]</h1>
+    <h1 id="VideoAuthor"><a href="?type=channel&channelnick=[CHANNELNICK]&pagenum=1" style="color:inherit;">[CHANNELTITLE]</a></h1>
+</div>
+<div id="SingleVideo">
+    <div id="Player">
+        <video id="PlayerVideo">
+            <source type="video/mp4" src="channels/[CHANNELID]/videos/[VIDEOID]/video.mp4" />
+        </video>
+        <div id="PlayerControls">
+            <div id="TopControls">
+                <!--Create controls-->
+            </div>
+            <div id="MiddleControl">
+                <button id="PlayButton">></button>
+            </div>
+            <div id="DownControls">
+                <button id="smallPlayButton" class="paused">></button>
+                <input type="range" class="Range" min=0 max=100 id="TimeRange" />
+                <p id="playTime"><span id="curTime"></span>/<span id="durTime"></span></p>
+                <p style="margin-left: 10px;">🔊</p>
+                <input type="range" class="Range" id="SoundRange" value="100" />
+            </div>
+        </div>
+    </div>
+    <div id="VideoProperties">
+        <div id="mainVideoProperties">
+            [MAINVIDPROPS]
+        </div>
+        <div id="subVideoProperties">
+            [VIDTOOLS]
+        </div>
+    </div>
+    <div id="Comments">
+        [COMMENTS]
+    </div>
+</div>
+<div id="Recommendations">
+    [RECOMMENDATIONS] <!-- recommendations shown on a single video page -->
+</div>

@@ -1,0 +1,14 @@
+<div class="ChannelProfile">
+    <div>
+        <form>
+            <a href="?type=channel&channelnick=[CHANNELNICK]&pagenum=1"><img src="channels/[CHANNELID]/ava.png" /></a>
+            <a href="?type=channel&channelnick=[CHANNELNICK]&pagenum=1"><p style="font-weight:bold;">[CHANNELTITLE]</p></a>
+            <p>[SUBNUM] subs</p>
+            
+            <!--yes means already subscribed, no means opposite-->
+            <input type="hidden" name="subscribed" value="[SUBSTATUS]" />
+            <input type="hidden" name="channelId" value="[CHANNELID]" />
+            <input type="submit" class="[SUBSTATUS]" value="[BTNSUBSTATUS]" />
+        </form>
+    </div>
+</div>

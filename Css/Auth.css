@@ -1,0 +1,23 @@
+#authContent form {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+#authContent form * {
+  list-style-type: none;
+  display: list-item;
+  margin-bottom: 15px;
+}
+#authContent input[type="text"],
+#authContent input[type="password"],
+#authContent input[type="submit"] {
+  border: 1px solid #333;
+  font-size: 17px;
+  border-radius: 2px;
+  padding: 3px;
+}
+#authContent input[type="submit"] {
+  background: #0ab20a;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}

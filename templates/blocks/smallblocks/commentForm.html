@@ -1,0 +1,11 @@
+<form id="commentForm" method="post">
+    <input type="hidden" name="videoId" value="[VIDEOID]" />
+    <input type="hidden" name="channelId" value="[CHANNELID]" />
+    <p style="font-size: 12px;">Leave a comment as </p>
+    <select name="userChannelId">
+        <option value="user[USERID]">[USERNICK]</option>
+        [CHANNELSOPTIONS]
+    </select>
+    <textarea name="text"></textarea>
+    <input type="submit" />
+</form>

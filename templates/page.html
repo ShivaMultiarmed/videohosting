@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>[PAGETITLE]</title>
+    <link rel="stylesheet" href="Css/MainStyle.css" />
+    <script src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--<script src="js/jquery-ui-1.13.1/jquery-ui.js"></script>-->
+    [HEADLINKS]
+</head>
+<body>
+    <header>
+        <div>
+            <a href="#" id="Logo" style="font-size: 40px;color:#fff;text-decoration:none;">FreeSpace<!--<img src="#" id="headerLogo" />--></p></a>
+            <form id="SearchForm">
+                <input type="text" placeholder="Search" />
+                <input type="submit" value="S" />
+            </form>
+            <div id="menu"></div>
+        </div>
+    </header>
+    <div id="Layout">
+        [CURRENTHEADER]
+        <aside id="SideBar">
+            <a href="#">Trends</a>
+            <a href="?type=subChannel&channelnick=feed&pagenum=1">Feed</a>
+            <a href="?type=subChannel&channelnick=watchLater&pagenum=1">Watch later</a>
+            <a href="?type=subChannel&channelnick=history&pagenum=1">History</a>
+            <a href="?type=user&userpagetype=subscriptions&pagenum=1">Subscriptions</a>
+            <a href="?type=user&userpagetype=playlists&pagenum=1">Playlists</a>
+        </aside>
+        <content id="[CONTENTTYPE]Content">
+            [MAINCONTENT]
+        </content>
+        <footer></footer>
+    </div>
+</body>
+</html>
