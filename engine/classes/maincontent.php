@@ -13,6 +13,7 @@
 		}
 		function ConstructMainContent()
 		{
+			global $Titles;
 
 			switch ($this -> Props["type"])
 			{
@@ -22,8 +23,15 @@
 					$mainContent .= $this -> Channel -> GetWholeVideos();
 				break;
 				case "video":
-					$this -> Channel = new Channel("channel", $this -> Props["channelnick"]);
-					$mainContent = $this -> Channel -> GetVideo($this -> Props["videoid"]);
+					global $host, $user, $pass, $dbstart;
+					
+					$MySqlI = new mysqli($host, $user, $pass, $dbstart."main");
+
+					$channelId = $MySqlI -> query("SELECT `channelId` FROM `channels` WHERE `channelNick` = '{$this -> Props["channelnick"]}';") -> fetch_assoc()["channelId"];
+					$this -> ThisVideo = new Video($channelId,$this -> Props["videoid"]);
+					$mainContent = $this -> ThisVideo -> viewVideo();
+				
+					$MySqlI -> close();
 				break;
 				case "subChannel":
 					$this -> User = new User($_COOKIE['userId']);
@@ -57,6 +65,9 @@
 						break;
 						case "signup":
 							$mainContent .= Auth::signUpForm();
+						break;
+						case "logout":
+							Auth::logOut();
 						break;
 					}
 				break;

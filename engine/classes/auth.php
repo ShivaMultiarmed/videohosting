@@ -12,17 +12,20 @@
 
 			$MySqlI = new mysqli($host, $user, $pass, $dbstart."main");
 
-			$sql = $MySqlI -> query("SELECT `password` FROM `{$tablestart}users` WHERE `nickname` = '{$nickname}';");
+			$sql = $MySqlI -> query("SELECT `password`, `userid` FROM `{$tablestart}users` WHERE `nickname` = '{$nickname}';");
+			
+			$userinfo = $sql -> fetch_assoc();
 			
 			$isErr = false;
 
 			if ($sql -> num_rows == 0)
 				$msg = "User is not found.";			
-			else if ($password != $sql -> fetch_assoc()["password"])
+			else if ($password != $userinfo["password"])
 				$msg = "Password is not correct";
 			else
 			{
-				setrawcookie("userId", trim(htmlspecialchars("2")), time()+60*60*24*7, "/", "freespace.byethost7.com"); // fix time for cookie (in seconds)
+				$userid = $sql -> fetch_assoc()["userid"];
+				setrawcookie("userId", trim(htmlspecialchars($userinfo["userid"])), time()+60*60*24*7, "/", "freespace.byethost7.com"); 
 				$msg = "You successfuly logged in.";
 				$isErr = true;
 			}
@@ -40,20 +43,38 @@
 
 			$MySqlI = new mysqli($host, $user, $pass, $dbstart."main");
 
-			foreach ($values as $key => $val)
+			$msgColor = "red";
+
+			if ($MySqlI -> query("SELECT `userid` FROM `users` WHERE `nickname` = '{$values['nickname']}' OR `email` = '{$values['email']}';") -> num_rows == 1)
+				$msg = "User with such email or (and) nickname already exists.";
+
+			else
 			{
-				$values[$key] = trim(htmlspecialchars($val));
-				if (!is_numeric($values[$key]))
-					$values[$key] = '"' . $values[$key] . '"';
+				foreach ($values as $key => $val)
+				{
+					$values[$key] = trim(htmlspecialchars($val));
+					if (!is_numeric($values[$key]))
+						$values[$key] = '"' . $values[$key] . '"';
+				}
+
+				$values = ["userid" => "NULL"] + $values;
+
+				$valuesstring = implode(",",$values);
+				
+				$MySqlI -> query("INSERT INTO `{$tablestart}users` VALUES({$valuesstring});");
+
+				$msg = "You successfully signed up";
+				$msgColor = "green";
 			}
 
-			$values = ["userid" => "NULL"] + $values;
-
-			$valuesstring = implode(",",$values);
-			
-			$MySqlI -> query("INSERT INTO `{$tablestart}users` VALUES({$valuesstring});");
-
 			$MySqlI -> close();
+
+			return ["msg" => $msg, "msgColor" => $msgColor];
+		}
+		static function logOut()
+		{
+			setcookie("userId", "", time()-1, "/", "freespace.byethost7.com");
+			header("Location: /");
 		}
 	}
 ?>

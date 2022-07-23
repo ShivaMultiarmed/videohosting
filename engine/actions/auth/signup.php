@@ -5,5 +5,5 @@
 
     require("{$Root}engine/classes/auth.php");
 
-    Auth::signUp($_POST);
+    echo json_encode(Auth::signUp($_POST));
 ?>

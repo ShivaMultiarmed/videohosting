@@ -19,7 +19,7 @@
                 "history" => "История", 
                 "watchLater" => "Смотреть позже",
                 "feed" => "Новости",
-                "playList" => "Плейлист "// . $MySqlI -> query("SELECT `title` FROM `playlists` WHERE `userId` = ". 2 ." AND `playListId` = " . trim(htmlspecialchars($_GET["playlistnum"])) . ";") -> fetch_assoc()["title"]
+                "playList" => "Плейлист "// . $MySqlI -> query("SELECT `title` FROM `playlists` WHERE `userId` = {$_COOKIE['userId']} AND `playListId` = " . trim(htmlspecialchars($_GET["playlistnum"])) . ";") -> fetch_assoc()["title"]
             ],
         "user" => [
                 "subscriptions" => "Подписки", 

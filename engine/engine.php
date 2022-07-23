@@ -26,6 +26,7 @@
 				"contenttype" => $this -> Props["type"],
 				"headlinks" => $this -> createLinks(), // links in <head>
 				"currentheader" => $this -> ConstructCurrentHeader(),
+				"profilemenu" => $this -> CreateProfileMenu(),
 				"maincontent" => $this -> ConstructMainContent(),
 				"pagetitle" => $Titles[$this -> Props["type"]][$this -> Props["channelNick"]]
 			];
@@ -37,11 +38,30 @@
 
 			$this -> WholePage = $wholepage;
 		}
+		function CreateProfileMenu()
+		{
+			global $host, $user, $pass, $dbstart;
+
+			if (!isset($_COOKIE["userId"]))
+			{
+				$menu = "<a style='color:#ffffff' href='/?type=auth&authpagetype=login'>Login</a>";
+			}
+			else
+			{
+				$MySqlI = new mysqli($host, $user, $pass, $dbstart."main");
+				$nickname = $MySqlI -> query("SELECT `nickname` FROM `users` WHERE `userid` = {$_COOKIE['userId']};") -> fetch_assoc()["nickname"];
+				$menu = "<a style='color:#ffffff' href='/?type=user&userpagetype=profile&nickname={$nickname}'>Profile</a>";
+				$menu .= "<a style='color:#ffffff' href='/?type=auth&authpagetype=logout'>Log out</a>";
+				$MySqlI -> close();
+			}
+
+			return $menu;
+		}
 		function createLinks() // return links in <head> (css, js ...)
 		{
 			$link = "";
 			$linksUrls = [
-				"video" => [["css", "SingleVideo"], ["js", "player"]],
+				"video" => [["css", "SingleVideo"], ["js", "player"], ["js", "comments"]],
 				"channel" => [["js","channel"]],
 				"auth" => [["js", "auth"], ["css", "Auth"]],
 				"user" => [["js", "channel"]]
@@ -81,8 +101,8 @@
 							"channeltitle" => $this -> Channel -> Props["title"],
 							"subnum" =>  $this -> Channel -> Props["subnum"],
 							"channelid" => $this -> Channel -> Props["channelId"],
-							"substatus" => ($MySqlI -> query("SELECT * FROM `subscriptions` WHERE `channelId` = " . $this -> Channel -> Props['channelId'] . " AND `userId` = " . 2 . ";") -> num_rows == 1) ? "yes" : "no",
-							"btnsubstatus" => ($MySqlI -> query("SELECT * FROM `subscriptions` WHERE `channelId` = " . $this -> Channel -> Props['channelId'] . " AND `userId` = " . 2 . ";") -> num_rows == 1) ? "Subscribed" : "Subscribe"
+							"substatus" => ($MySqlI -> query("SELECT * FROM `subscriptions` WHERE `channelId` = " . $this -> Channel -> Props['channelId'] . " AND `userId` = {$_COOKIE['userId']};") -> num_rows == 1) ? "yes" : "no",
+							"btnsubstatus" => ($MySqlI -> query("SELECT * FROM `subscriptions` WHERE `channelId` = " . $this -> Channel -> Props['channelId'] . " AND `userId` = {$_COOKIE['userId']};") -> num_rows == 1) ? "Subscribed" : "Subscribe"
 						];
 					break;
 				}

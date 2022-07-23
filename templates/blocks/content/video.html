@@ -9,14 +9,41 @@
         </video>
         <div id="PlayerControls">
             <div id="TopControls">
-                <!--Create controls-->
+                <ul>
+                    <li id="SpeedSetting">
+                        Speed
+                        <ul>
+                            <li>0.5</li>
+                            <li>1.0</li>
+                            <li>1.5</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Quality
+                        <ul>
+                            <li>360p</li>
+                            <li>480p</li>
+                            <li>720p</li>
+                            <li>1080p</li>
+                        </ul>
+                    </li>
+                    <li>
+                        More settings
+                        <ul>
+                            <li>Setting 1</li>
+                            <li>Setting 2</li>
+                            <li>Setting 3</li>
+                            <li>Setting 4</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
             <div id="MiddleControl">
                 <button id="PlayButton">></button>
             </div>
             <div id="DownControls">
                 <button id="smallPlayButton" class="paused">></button>
-                <input type="range" class="Range" min=0 max=100 id="TimeRange" />
+                <input type="range" class="Range" min=0 max=100 value=0 id="TimeRange" />
                 <p id="playTime"><span id="curTime"></span>/<span id="durTime"></span></p>
                 <p style="margin-left: 10px;">🔊</p>
                 <input type="range" class="Range" id="SoundRange" value="100" />

@@ -5,6 +5,8 @@ $(document).ready(
     {
         var Video, CurTime, Interval;
 
+        Video = $("#PlayerVideo");
+
         function playpause()
         {
             Video = $("#PlayerVideo");
@@ -23,6 +25,54 @@ $(document).ready(
         $("#PlayerButton").click(playpause);
         $("#smallPlayButton").click(playpause);
 
+        $("#MiddleControl").click(
+            function ()
+            {
+                $("#MiddleControl").focus();
+            }
+        );
+        $(":not(#MiddleControl)").click(
+            function ()
+            {
+                $("#MiddleControl").blur();
+            }
+        );
+        $("#MiddleControl").focus(
+            function ()
+            {
+                // Controls of the video
+
+                $("body").keydown(
+                    function (e)
+                    {
+                        Video = $("#PlayerVideo");
+
+                        //alert(e.code);
+
+                        switch(e.code)
+                        {
+                            case "ArrowRight":
+                                Video[0].currentTime += 5; 
+                            break;
+                            case "ArrowLeft":
+                                Video[0].currentTime -= 5; 
+                            break;
+                            case "ArrowUp":
+                                Video[0].volume += 0.1; 
+                                $("#SoundRange").val($("#SoundRange").val()+10);
+                            break;
+                            case "ArrowDown":
+                                Video[0].volume -= 0.1; 
+                                $("#SoundRange").val($("#SoundRange").val()-10);
+                            break;
+                            case "Space":
+                                playpause();
+                            break;
+                        }
+                    }
+                );
+            }
+        );        
 
         $("#PlayerControls").mouseenter
         (
@@ -37,6 +87,8 @@ $(document).ready(
             }
         );
      
+        // Display entire and current time
+
         $("#PlayerVideo").on("loadedmetadata", function (event) {
             Video = $("#PlayerVideo")[0];
             
@@ -60,6 +112,8 @@ $(document).ready(
                 }, 250
             );
         });     
+
+        // Change current time via time range (input range)
 
         $("#TimeRange").on("input",
             function()
@@ -93,73 +147,14 @@ $(document).ready(
                 Video.volume = $(this).val()/100;
             }
         );
-
-
-       function validForm()
-       {
-        var valid = true;
-        var formData = $("#commentForm").serialize();
-        values = formData.split("&");
-        valuesJSON = {};
-        for (i = 0; i<values.length;i++)
-        {
-            values[i] = values[i].split("=");
-            valuesJSON[values[i][0]] = values[i][1];
-            if (values[i][0] == "text")
+        $("#SpeedSetting ul li").click(
+            function ()
             {
-                if (values[i][1] == "")
-                {
-                    valid = false;
-                    message("Text is empty");
-                }
-                else if (values[i][1].length > 100)
-                {
-                    valid = false;
-                    message("Too many symbols.");
-                }
+                Video = $("#PlayerVideo");
+                Video[0].playbackRate = parseFloat($(this).html());
             }
-            else if (values[i][0] == "videoId" || values[i][0] == "channelId" || values[i][0] == "userId")
-            {
-                if (values[i][1] == "")
-                {
-                    valid = false;
-                    message("Site error.");
-                }
-            }
-        }
-        return [valid,valuesJSON];
-       }
-       function setCommentSubmit()
-       {
-            $("#commentForm").submit(
-                function ()
-                {
-                    if (validForm()[0])
-                        $.ajax(
-                            {
-                                type: "POST",
-                                url: "engine/actions/comment.php", 
-                                data: validForm()[1],
-                                cache: false,
-                                success: function (newcomments)
-                                    {
-                                        $("#Comments").html(newcomments);
-                                        message("Ok");
-                                        setCommentSubmit();
-                                    }
-                            }
-                        );
-                    return false;
-                }
-            );
-       }
-       setCommentSubmit();
-       function message(text)
-       {
-            $(".errormsg").remove();
-           if (text != "Ok")                
-                $("#commentForm").html($("#commentForm").html() + "<p class='errormsg' style='color: red;'>" + text + "</p>");                
-       }
+        );
+
        function setLikeDislikeSubmit()
        {
            
@@ -197,24 +192,31 @@ $(document).ready(
                    break;
                    case "save":
                         createPlaylistDialog();
-                        $("#dialogWindow form input[type='checkbox']").click(
-                            function()
+                        $("#dialogWindow form input[type='checkbox']").ready(
+                            function ()
                             {
-                                console.log("hey");
-                                //console.log($("#subVideoProperties form").serialize()+"&playlist="+$(this).val()+"&add="+$(this).attr("checked"));
-                                /*$.ajax(
+                                alert($("#dialogWindow form input[type='checkbox']")); 
+                                $("#dialogWindow form input[type='checkbox']").on(
+                                    "click",
+                                    function()
                                     {
-                                        cache: false,
-                                        data: $("#subVideoProperties form").serialize()+"&playlist="+$(this).val()+"&add="+$(this).attr("checked"),
-                                        type: "POST",
-                                        url: "engine/actions/playlists.php",
-                                        success:
-                                            function (res)
+                                        alert("hey");
+                                        //console.log("playlist="+$(this).val()+"&add="+$(this).attr("checked"));
+                                        /*$.ajax(
                                             {
-                                                console.log(res);
-                                            }   
+                                                cache: false,
+                                                data: $("#subVideoProperties form").serialize()+"&playlist="+$(this).val()+"&add="+$(this).attr("checked"),
+                                                type: "POST",
+                                                url: "engine/actions/playlists.php",
+                                                success:
+                                                    function (res)
+                                                    {
+                                                        console.log(res);
+                                                    }   
+                                            }
+                                        );*/
                                     }
-                                );*/
+                                );
                             }
                         );
                    break;

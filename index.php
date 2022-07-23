@@ -9,6 +9,7 @@
 
 	require("engine/classes/maincontent.php");
 	require("engine/classes/channel.php");
+	require("engine/classes/video.php");
 	require("engine/classes/user.php");
 	require("engine/classes/auth.php");
 
@@ -20,6 +21,9 @@
 		$subarr = explode("=", $value);
 		$props[$subarr[0]] = $subarr[1];
 	}
+
+	if (!isset($_COOKIE["userId"]) and $props["type"] != "auth")
+		header("Location: ?type=auth&authpagetype=login");
 
 	$Page = new Page($props);
 	$Page -> Init();

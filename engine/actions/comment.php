@@ -2,6 +2,7 @@
     $Root = $_SERVER["DOCUMENT_ROOT"] . "/";
 
     require($Root . "engine/common.php");
+    require($Root . "engine/classes/video.php");
     require($Root . "engine/classes/channel.php");
 
     $text = htmlspecialchars(trim($_POST["text"]));
@@ -32,6 +33,6 @@
 
     $Channels -> close();
 
-    $ThisChannel = new Channel("channel", $channelNick); 
-    echo $ThisChannel -> GetComments($videoId);
+    $ThisVideo = new Video($channelId, $videoId);
+    echo $ThisVideo -> GetComments();
 ?>
